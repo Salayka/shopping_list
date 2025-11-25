@@ -1,21 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_list/data/categories.dart';
 
-class NewItem extends StatefulWidget{
+class NewItem extends StatefulWidget {
   const NewItem({super.key});
-  State<NewItem> createState(){
+  State<NewItem> createState() {
     return _NewItemState();
   }
 }
-class _NewItemState extends State<NewItem>{
+
+class _NewItemState extends State<NewItem> {
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Add a new item...")
-      ),
-      body: Padding(padding: EdgeInsets.all(12),
-        child: Text("Form Goes Here")
+      appBar: AppBar(title: Text("Add a new item...")),
+      body: Padding(
+        padding: EdgeInsets.all(12),
+        child: Form(
+          child: Column(
+            children: [
+              TextFormField(
+                maxLength: 50,
+                decoration: InputDecoration(label: Text('Name')),
+                validator: (value){
+                  return null;
+                },
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      label:Text("Quantity"),
+                    ),
+                    initialValue: '1',
+                  ),
+                ),
+                const SizedBox(width:8),
+                Expanded(
+                  child: DropdownButtonFormField(items: [
+                    for(final category in categories.entries)
+                      DropdownMenuItem(
+                        value:category.value,
+                        child: Row(children: [
+                        Container(
+                          width:16, 
+                          height:16,
+                          color:category.value.color
+                        ),
+                        const SizedBox(width:6),
+                        Text(category.value.title),
+                      ],)
+                      ,)
+                  ], onChanged: (value){}),
+                )
+              ],)
+            ],
+          ),
+        ),
       ),
     );
   }
