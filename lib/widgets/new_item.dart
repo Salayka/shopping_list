@@ -21,47 +21,68 @@ class _NewItemState extends State<NewItem> {
               TextFormField(
                 maxLength: 50,
                 decoration: InputDecoration(label: Text('Name')),
-                validator: (value){
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      value.length <= 1 ||
+                      value.length > 50) {
+                    return "Must have a name between 2 and 50 characters long!";
+                  }
                   return null;
                 },
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      label:Text("Quantity"),
+                  Expanded(
+                    child: TextFormField(
+                      decoration: InputDecoration(label: Text("Quantity")),
+                      initialValue: '1',
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            int.tryParse(value)==null ||
+                            int.tryParse(value)! <=0) {
+                          return "Must Enter a quantity greater than 0";
+                        }
+                        return null;
+                      },
                     ),
-                    initialValue: '1',
                   ),
-                ),
-                const SizedBox(width:8),
-                Expanded(
-                  child: DropdownButtonFormField(items: [
-                    for(final category in categories.entries)
-                      DropdownMenuItem(
-                        value:category.value,
-                        child: Row(children: [
-                        Container(
-                          width:16, 
-                          height:16,
-                          color:category.value.color
-                        ),
-                        const SizedBox(width:6),
-                        Text(category.value.title),
-                      ],)
-                      ,)
-                  ], onChanged: (value){}),
-                )
-              ],),
-              const SizedBox(height:12),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: DropdownButtonFormField(
+                      items: [
+                        for (final category in categories.entries)
+                          DropdownMenuItem(
+                            value: category.value,
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 16,
+                                  height: 16,
+                                  color: category.value.color,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(category.value.title, ),
+                              ],
+                            ),
+                          ),
+                      ],
+                      onChanged: (value) {},
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12,),
               Row(
+
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                TextButton(onPressed: (){},child: const Text("Reset")),
-                ElevatedButton(onPressed: (){}, child: Text("Add Item"))
-              ],)
+                  TextButton(onPressed: () {}, child: const Text("Reset")),
+                  ElevatedButton(onPressed: () {}, child: Text("Add Item")),
+                ],
+              ),
             ],
           ),
         ),
